@@ -1,0 +1,24 @@
+name: Atualizar Base Exact Spotter (Delta)
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '0 * * * *'
+permissions:
+  contents: write
+concurrency:
+  group: exact-spotter-supabase
+  cancel-in-progress: false
+jobs:
+  delta:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.10'
+      - run: pip install pandas requests pyarrow sqlalchemy psycopg2-binary
+      - name: Executar extrator (delta)
+        env:
+          EXACT_TOKEN: ${{ secrets.EXACT_TOKEN }}
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+        run: python extrator.py
