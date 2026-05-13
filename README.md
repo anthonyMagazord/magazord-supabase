@@ -1,0 +1,1 @@
+# magazord-supabase
